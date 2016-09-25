@@ -1,7 +1,11 @@
 [package]
 name = "rusty-keychain"
+description = "Password manager written in Rust, using gpg and git for sync"
 version = "0.1.0"
 authors = ["Marcelino Coll Rovira <coll.marce@gmail.com>"]
+readme = "README.md"
+keywords = ["manager", "password", "gpg", "security"]
+license = "GPLv3"
 
 [dependencies]
 clap = "2.13.0"
