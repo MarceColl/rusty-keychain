@@ -6,3 +6,9 @@ Password manager using:
 - gpg for encrypting
 - git for syncronizing
 
+
+
+
+## CLI
+
+`rk generate <length>`
