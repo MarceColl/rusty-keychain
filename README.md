@@ -1,4 +1,4 @@
-# Rusty Keychain
+# Rusty Keychain [![Build Status](https://travis-ci.org/MarceColl/rusty-keychain.svg?branch=master)](https://travis-ci.org/MarceColl/rusty-keychain)
 
 Password manager using:
 
