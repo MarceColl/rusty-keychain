@@ -1,0 +1,6 @@
+[package]
+name = "rusty-keychain"
+version = "0.1.0"
+authors = ["Marcelino Coll Rovira <coll.marce@gmail.com>"]
+
+[dependencies]
