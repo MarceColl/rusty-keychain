@@ -4,3 +4,7 @@ version = "0.1.0"
 authors = ["Marcelino Coll Rovira <coll.marce@gmail.com>"]
 
 [dependencies]
+clap = "2.13.0"
+git2 = "0.4.4"
+log = "0.3.6"
+log4rs = "0.4.8"
