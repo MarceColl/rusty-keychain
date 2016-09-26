@@ -1,7 +1,7 @@
 extern crate clap;
 extern crate log;
 
-use clap::{Arg, App, SubCommand, ArgMatches};
+use clap::{App, SubCommand, ArgMatches};
 
 pub fn define_subcommand<'a, 'b>() -> App<'a, 'b> {
 	SubCommand::with_name("sync")

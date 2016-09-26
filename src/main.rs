@@ -1,7 +1,8 @@
 extern crate clap;
 extern crate log;
+extern crate rand;
 
-use clap::{Arg, App, SubCommand, ArgMatches};
+use clap::{Arg, App, ArgMatches};
 
 mod init;
 mod manage;

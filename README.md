@@ -5,6 +5,7 @@ Password manager using:
 - Rust for the client
 - gpg for encrypting
 - git for syncronizing
+- YAML to store the accounts for each site
 
 
 
