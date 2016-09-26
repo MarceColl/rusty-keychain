@@ -3,11 +3,11 @@ extern crate log;
 extern crate git2;
 extern crate gpgme;
 
-use std::env;
+use std::fs;
 use std::io;
-use std::io::prelude::*;
+use std::env;
 use std::process::exit;
-
+use std::path::PathBuf;
 use clap::{Arg, App, SubCommand, ArgMatches};
 
 pub fn define_subcommand<'a>() -> App<'a, 'a> {
@@ -24,35 +24,42 @@ pub fn define_subcommand<'a>() -> App<'a, 'a> {
 }
 
 pub fn exec<'a>(matches: &ArgMatches<'a>) {
-	let key = matches.value_of("gpgkey").unwrap().to_string();
+	let key_input = matches.value_of("gpgkey").unwrap();
 
-	println!("{}", key);
+	let mut key = get_key(key_input);
 
-	// let proto = gpgme::PROTOCOL_OPENPGP;
+	match key {
+		Ok(k) => println!("Key found. fingerprint: {}", k.fingerprint().unwrap()),
+		Err(e) => println!("Key not found."),
+	}
 
-	// let mut mode = gpgme::ops::KeyListMode::empty();
-	// let mut ctx = gpgme::create_context().unwrap();
- //    ctx.set_protocol(proto).unwrap();
- //    ctx.set_key_list_mode(mode).unwrap();
+	create_rk_folder_structure();
+}
 
- //    let mut key = ctx.find_key(key.into_bytes().into()).unwrap();
- //    println!("keyid   : {}", key.id().unwrap_or("?"));
- //    println!("fpr     : {}", key.fingerprint().unwrap_or("?"));
- //    println!("caps    : {}{}{}{}",
- //             if key.can_encrypt() { "e" } else { "" },
- //             if key.can_sign() { "s" } else { "" },
- //             if key.can_certify() { "c" } else { "" },
- //             if key.can_authenticate() { "a" } else { "" });
- //    println!("flags   :{}{}{}{}{}{}",
- //             if key.is_secret() { " secret" } else { "" },
- //             if key.is_revoked() { " revoked" } else { "" },
- //             if key.is_expired() { " expired" } else { "" },
- //             if key.is_disabled() { " disabled" } else { "" },
- //             if key.is_invalid() { " invalid" } else { "" },
- //             if key.is_qualified() { " qualified" } else { "" });
- //    for (i, user) in key.user_ids().enumerate() {
- //        println!("userid {}: {}", i, user.uid().unwrap_or("[none]"));
- //        println!("valid  {}: {:?}", i, user.validity())
- //    }
- //    println!("");
+fn get_key(key_id: &str) -> Result<gpgme::keys::Key, gpgme::Error> {
+	let proto = gpgme::PROTOCOL_OPENPGP;
+
+	let mut mode = gpgme::ops::KeyListMode::empty();
+	let mut ctx = gpgme::create_context().unwrap();
+    ctx.set_protocol(proto).unwrap();
+    ctx.set_key_list_mode(mode).unwrap();
+
+    ctx.find_key::<String>(key_id.to_string())
+}
+
+fn create_rk_folder_structure() {
+	let mut home_path: PathBuf = env::home_dir().expect("could not determine a home directory");
+
+	println!("{:?}", home_path.to_str());
+
+	home_path.push(".rusty-keychain");
+	let folder_create_result = fs::create_dir(home_path.as_path());
+
+	match folder_create_result {
+		Ok(_) => println!("Folder created successfully"),
+		Err(why) => match why.kind() {
+			io::ErrorKind::AlreadyExists => println!("Folder already exists. No need to create new."),
+			_ => println!("Couldn't create folder: {}", why),
+		},
+	}
 }
