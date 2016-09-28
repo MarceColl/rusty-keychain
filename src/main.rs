@@ -1,12 +1,17 @@
-extern crate clap;
+#[macro_use]
 extern crate log;
+extern crate clap;
 extern crate rand;
+extern crate log4rs;
+extern crate yaml_rust;
 
 use clap::{Arg, App, ArgMatches};
 
 mod init;
 mod manage;
 mod sync;
+mod gpg;
+mod copy;
 
 fn setup_cli<'a>() -> ArgMatches<'a> {
     App::new("Rusty Keychain")
@@ -21,14 +26,27 @@ fn setup_cli<'a>() -> ArgMatches<'a> {
         .subcommand(init::define_subcommand())
         .subcommand(manage::define_subcommand())
         .subcommand(sync::define_subcommand())
+        .subcommand(copy::define_subcommand())
         .get_matches()
+}
+
+
+fn setup_logging() {
+    log4rs::init_file("/Users/MarceColl/Projects/security/rusty-keychain/config/log4rs.yml",
+                        Default::default()).unwrap();
+    
+    info!("------------- NEW -------------");
 }
 
 
 fn main() {
     let matches = setup_cli();
 
-    if let Some(matches) = matches.subcommand_matches("manage") {
+    setup_logging();
+
+    if let Some(matches) = matches.subcommand_matches("copy") {
+        copy::exec(matches);
+    } else if let Some(matches) = matches.subcommand_matches("manage") {
     	manage::exec(matches);
     } else if let Some(matches) = matches.subcommand_matches("sync") {
     	sync::exec(matches);

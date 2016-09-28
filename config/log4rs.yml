@@ -1,0 +1,23 @@
+refresh_rate: 30 seconds
+appenders:
+  stdout:
+    kind: console
+  rustykeychain:
+    kind: file
+    path: "log/rusty-keychain.log"
+    encoder:
+      pattern: "{d(%Y-%m-%d %H:%M:%S)} {l:<8.8} {m}{n}"
+
+root:
+  level: info
+  appenders:
+    - rustykeychain
+
+loggers:
+  app::backend::db:
+    level: info
+  app::requests:
+    level: info
+    appenders:
+      - rustykeychain
+    additive: true
