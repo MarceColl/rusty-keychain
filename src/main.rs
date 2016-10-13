@@ -12,6 +12,7 @@ mod manage;
 mod sync;
 mod gpg;
 mod copy;
+mod utils;
 
 fn setup_cli<'a>() -> ArgMatches<'a> {
     App::new("Rusty Keychain")

@@ -7,6 +7,14 @@ readme = "README.md"
 keywords = ["manager", "password", "gpg", "security"]
 license = "GPLv3"
 
+[[bin]]
+name = "rk-clear"
+path = "src/rk-clear/main.rs"
+
+[[bin]]
+name = "rk"
+path = "src/main.rs"
+
 [dependencies]
 clap = "2.13.0"
 git2 = "0.4.4"
@@ -18,3 +26,4 @@ rand = "0.3.14"
 rmp = "0.7.5"
 sha2 = "0.1.2"
 clipboard = "0.1.2"
+libc = "*"
